@@ -3,27 +3,27 @@
 namespace App\Controllers;
 
 use App\Lib\Sessao;
-use App\Models\DAO\ProdutoDAO;
-use App\Models\Entidades\Produto;
-use App\Models\Validacao\ProdutoValidador;
+use App\Models\DAO\CategoriaProdutoDAO;
+use App\Models\Entidades\CategoriaProduto;
+use App\Models\Validacao\CategoriaProdutoValidador;
 
-class ProdutoController extends Controller
+class CategoriaProdutoController extends Controller
 {
     //Dentro de um Controller, cada método público é em geral uma ação
     public function index()
     {
-        $produtoDAO = new ProdutoDAO();
+        $categoriaProdutoDAO = new CategoriaProdutoDAO();
 
-        self::setViewParam('listaProdutos', $produtoDAO->listar());
+        self::setViewParam('listaCategoriasProduto', $categoriaProdutoDAO->listar());
 
-        $this->render('/produto/index');
+        $this->render('/categoriaproduto/index');
 
         Sessao::limpaMensagem();
     }
 
     public function cadastro()
     {
-        $this->render('/produto/cadastro');
+        $this->render('/categoriaproduto/cadastro');
 
         Sessao::limpaFormulario();
         Sessao::limpaMensagem();
@@ -32,117 +32,113 @@ class ProdutoController extends Controller
 
     public function salvar()
     {
-        $produto = new Produto();
-        $produto->setNome($_POST['nome']);
-        $produto->setPreco($_POST['preco']);
-        $produto->setQuantidade($_POST['quantidade']);
-        $produto->setDescricao($_POST['descricao']);
+        $categoriaProduto = new CategoriaProduto();
+        $categoriaProduto->setDescricao($_POST['descricao']);
 
         Sessao::gravaFormulario($_POST);
 
-        $produtoValidador = new ProdutoValidador();
-        $resultadoValidacao = $produtoValidador->validar($produto);
+        $categoriaProdutoValidador = new CategoriaProdutoValidador();
+        $resultadoValidacao = $categoriaProdutoValidador->validar($categoriaProduto);
 
         if ($resultadoValidacao->getErros()) {
             Sessao::gravaErro($resultadoValidacao->getErros());
-            $this->redirect('/produto/cadastro');
+            $this->redirect('/categoriaproduto/cadastro');
         }
 
-        $produtoDAO = new ProdutoDAO();
+        $categoriaProdutoDAO = new CategoriaProdutoDAO();
 
-        $produtoDAO->salvar($produto);
+        $categoriaProdutoDAO->salvar($categoriaProduto);
 
         Sessao::limpaFormulario();
         Sessao::limpaMensagem();
         Sessao::limpaErro();
 
-        $this->redirect('/produto');
+        $this->redirect('/categoriaproduto');
     }
 
     public function edicao($params)
     {
         $id = $params[0];
 
-        $produtoDAO = new ProdutoDAO();
+        $categoriaProdutoDAO = new CategoriaProdutoDAO();
 
-        $produto = $produtoDAO->listar($id);
+        $categoriaProduto = $categoriaProdutoDAO->listar($id);
 
-        if (!$produto) {
-            Sessao::gravaMensagem("Produto inexistente");
-            $this->redirect('/produto');
+        if (!$categoriaProduto) {
+            Sessao::gravaMensagem("Categoria de Produto inexistente");
+            $this->redirect('/categoriaProduto');
         }
 
-        self::setViewParam('produto', $produto);
+        self::setViewParam('categoriaProduto', $categoriaProduto);
 
-        $this->render('/produto/editar');
+        $this->render('/categoriaproduto/editar');
 
         Sessao::limpaMensagem();
     }
 
     public function atualizar()
     {
-        $produto = new Produto();
-        $produto->setId($_POST['id']);
-        $produto->setNome($_POST['nome']);
-        $produto->setPreco($_POST['preco']);
-        $produto->setQuantidade($_POST['quantidade']);
-        $produto->setDescricao($_POST['descricao']);
+        $categoriaProduto = new CategoriaProduto();
+        $categoriaProduto->setId($_POST['id']);
+        $categoriaProduto->setDescricao($_POST['descricao']);
 
+        print_r($_POST);
+//        die();
         Sessao::gravaFormulario($_POST);
 
-        $produtoValidador = new ProdutoValidador();
-        $resultadoValidacao = $produtoValidador->validar($produto);
+        $categoriaProdutoValidador = new CategoriaProdutoValidador();
+        $resultadoValidacao = $categoriaProdutoValidador->validar($categoriaProduto);
 
         if ($resultadoValidacao->getErros()) {
             Sessao::gravaErro($resultadoValidacao->getErros());
-            $this->redirect('/produto/edicao/' . $_POST['id']);
+            $this->redirect('/categoriaproduto/edicao/' . $_POST['id']);
         }
 
-        $produtoDAO = new ProdutoDAO();
+        $categoriaProdutoDAO = new CategoriaProdutoDAO();
 
-        $produtoDAO->atualizar($produto);
+        $categoriaProdutoDAO->atualizar($categoriaProduto);
 
         Sessao::limpaFormulario();
         Sessao::limpaMensagem();
         Sessao::limpaErro();
 
-        $this->redirect('/produto');
+        $this->redirect('/categoriaproduto');
     }
 
     public function exclusao($params)
     {
         $id = $params[0];
 
-        $produtoDAO = new ProdutoDAO();
+        $categoriaProdutoDAO = new CategoriaProdutoDAO();
 
-        $produto = $produtoDAO->listar($id);
+        $categoriaProduto = $categoriaProdutoDAO->listar($id);
 
-        if (!$produto) {
-            Sessao::gravaMensagem("Produto inexistente");
-            $this->redirect('/produto');
+        if (!$categoriaProduto) {
+            Sessao::gravaMensagem("Categoria de Produto inexistente");
+            $this->redirect('/categoriaproduto');
         }
 
-        self::setViewParam('produto', $produto);
+        self::setViewParam('categoriaProduto', $categoriaProduto);
 
-        $this->render('/produto/exclusao');
+        $this->render('/categoriaproduto/exclusao');
 
         Sessao::limpaMensagem();
     }
 
     public function excluir()
     {
-        $produto = new Produto();
-        $produto->setId($_POST['id']);
+        $categoriaProduto = new CategoriaProduto();
+        $categoriaProduto->setId($_POST['id']);
 
-        $produtoDAO = new ProdutoDAO();
+        $categoriaProdutoDAO = new CategoriaProdutoDAO();
 
-        if (!$produtoDAO->excluir($produto)) {
-            Sessao::gravaMensagem("Produto inexistente");
-            $this->redirect('/produto');
+        if (!$categoriaProdutoDAO->excluir($categoriaProduto)) {
+            Sessao::gravaMensagem("Categoria de Produto inexistente");
+            $this->redirect('/categoriaproduto');
         }
 
-        Sessao::gravaMensagem("Produto excluído com sucesso!");
+        Sessao::gravaMensagem("Categoria de Produto excluído com sucesso!");
 
-        $this->redirect('/produto');
+        $this->redirect('/categoriaproduto');
     }
 }

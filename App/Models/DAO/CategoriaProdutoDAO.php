@@ -2,90 +2,78 @@
 
 namespace App\Models\DAO;
 
-use App\Models\Entidades\Produto;
+use App\Models\Entidades\CategoriaProduto;
 
-class ProdutoDAO extends BaseDAO
+class CategoriaProdutoDAO extends BaseDAO
 {
     public function listar($id = null)
     {
         if ($id) {
             $resultado = $this->select(
-                "SELECT * FROM produto WHERE id = $id"
+                "SELECT * FROM categoriaproduto WHERE id = $id"
             );
 
-            return $resultado->fetchObject(Produto::class);
+            return $resultado->fetchObject(CategoriaProduto::class);
         } else {
             $resultado = $this->select(
-                'SELECT * FROM produto'
+                'SELECT * FROM categoriaproduto'
             );
-            return $resultado->fetchAll(\PDO::FETCH_CLASS, Produto::class);
+            return $resultado->fetchAll(\PDO::FETCH_CLASS, CategoriaProduto::class);
         }
 
         return false;
     }
 
-    public function salvar(Produto $produto)
+    public function salvar(CategoriaProduto $categoriaProduto)
     {
         try {
 
-            $nome = $produto->getNome();
-            $preco = $produto->getPreco();
-            $quantidade = $produto->getQuantidade();
-            $descricao = $produto->getDescricao();
+            $descricao = $categoriaProduto->getDescricao();
 
             return $this->insert(
-                'produto',
-                ":nome,:preco,:quantidade,:descricao",
+                'categoriaproduto',
+                ":descricao",
                 [
-                    ':nome' => $nome,
-                    ':preco' => $preco,
-                    ':quantidade' => $quantidade,
-                    ':descricao' => $descricao,
+                    ':descricao' => $descricao
                 ]
             );
 
         } catch (\Exception $e) {
-            throw new \Exception("Erro na gravação de dados.", 500);
+            throw new \Exception("Erro na gravação de dados da Categoria Produto.", 500);
         }
     }
 
-    public function atualizar(Produto $produto)
+    public function atualizar(CategoriaProduto $categoriaProduto)
     {
         try {
 
-            $id = $produto->getId();
-            $nome = $produto->getNome();
-            $preco = $produto->getPreco();
-            $quantidade = $produto->getQuantidade();
-            $descricao = $produto->getDescricao();
+            $id = $categoriaProduto->getId();
+            $descricao = $categoriaProduto->getDescricao();
 
             return $this->update(
-                'produto',
-                "nome = :nome, preco = :preco, quantidade = :quantidade, descricao = :descricao",
+                'categoriaproduto',
+                "descricao = :descricao",
                 [
                     ':id' => $id,
-                    ':nome' => $nome,
-                    ':preco' => $preco,
-                    ':quantidade' => $quantidade,
-                    ':descricao' => $descricao,
+                    ':descricao' => $descricao
                 ],
                 "id = :id"
             );
 
         } catch (\Exception $e) {
-            throw new \Exception("Erro na gravação de dados.", 500);
+            throw new \Exception("Erro na gravação de dados da Categoria Produto.", 500);
         }
     }
 
-    public function excluir(Produto $produto)
+    public function excluir(CategoriaProduto $categoriaProduto)
     {
         try {
-            $id = $produto->getId();
+            $id = $categoriaProduto->getId();
 
-            return $this->delete('produto', $id);
+            return $this->delete('categoriaproduto', $id);
 
         } catch (Exception $e) {
-            throw new \Exception("Erro ao deletar", 500);
+            throw new \Exception("Erro ao deletar Categoria Produto", 500);
         }
     }
 }
