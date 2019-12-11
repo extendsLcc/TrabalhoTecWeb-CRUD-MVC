@@ -18,7 +18,7 @@ class App
         /*
          * Constantes do sistema
          */
-        define('APP_HOST', $_SERVER['HTTP_HOST'] . "/ifpr-mvc-crud");
+        define('APP_HOST', $_SERVER['HTTP_HOST'] . "/TrabalhoTecWeb-CRUD-MVC");
         define('PATH', realpath('./')); //path completo do servidor
         define('TITLE', "CRUD em MVC");
         define('DB_HOST', "localhost");

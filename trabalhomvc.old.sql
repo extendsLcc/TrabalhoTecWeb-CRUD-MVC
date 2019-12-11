@@ -1,15 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 10-Dez-2019 às 23:34
--- Versão do servidor: 10.1.37-MariaDB
--- versão do PHP: 7.3.0
-
-
-CREATE DATABASE IF NOT EXISTS trabalhomvc;
-USE trabalhomvc;
+-- Generation Time: 10-Dez-2019 às 01:56
+-- Versão do servidor: 10.1.38-MariaDB
+-- versão do PHP: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;

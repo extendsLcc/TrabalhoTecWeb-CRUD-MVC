@@ -73,6 +73,25 @@
 
                 </li>
 
+                <li class="dropdown <?php if ($viewVar['nameController'] == "ClienteController" ) { ?> active<?php }?>">
+                    <a href="#" class="dropdown-toggle"
+                       data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"
+                    >
+                        Cliente <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li <?php if ($viewVar['nameController'] == "ClienteController" && ($viewVar['nameAction'] == "" || $viewVar['nameAction'] == "index")) { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/cliente">Lista de Cliente</a>
+                        </li>
+                        <li <?php if ($viewVar['nameController'] == "ClienteController" && $viewVar['nameAction'] == "cadastro") { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/cliente/cadastro">Cadastro de Cliente</a>
+                        </li>
+                    </ul>
+
+                </li>
+
             </ul>
         </div>
     </div>
